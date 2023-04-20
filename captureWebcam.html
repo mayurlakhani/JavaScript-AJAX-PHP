@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam</title>
+    <style>
+        .camera-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            }
+
+        #video {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+        }
+        h1 {
+            margin-top: -350px;
+            position: absolute;
+            text-align: center;
+            color: green;
+            font-size: 8em;
+            transition: 0.5s;
+            font-family: Arial, Helvetica, sans-serif;
+            text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc,
+                0 3px 0 #ccc, 0 4px 0 #ccc,
+                0 5px 0 #ccc, 0 6px 0 #ccc,
+                0 7px 0 #ccc, 0 8px 0 #ccc,
+                0 9px 0 #ccc, 0 10px 0 #ccc,
+                0 11px 0 #ccc, 0 12px 0 #ccc,
+                0 20px 30px rgba(0, 0, 0, 0.5);
+        }
+ 
+        h1:hover {
+            color: blue;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="camera-container">
+        <div id="vidContainer">
+            <video id="video"></video>
+        </div>
+        <div id="capturedImg">
+
+        </div>
+        <button id="capture-btn">Take photo</button>
+        <div id="counter"></div>
+      </div>
+    <script>
+        const video = document.getElementById('video');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(err => {
+            console.error('Error accessing the camera', err);
+        });
+
+        const counter = document.getElementById('counter');
+        const captureBtn = document.getElementById('capture-btn');
+        const vidContainer = document.getElementById("vidContainer");
+        const capturedImg = document.getElementById("capturedImg");
+        const Img = document.createElement("img");
+        let tag_h1 = document.createElement("h1");
+        let countdown = null;
+        let remainingSeconds = 3;
+
+        captureBtn.addEventListener('click', () => {
+            remainingSeconds = 3;
+            capturedImg.style.display = "none";
+            vidContainer.style.display="block";
+            // counter
+            countdown = setInterval(() => {
+                remainingSeconds--;
+                tag_h1.textContent =remainingSeconds;
+                counter.appendChild(tag_h1); 
+                //counter.textContent = remainingSeconds;
+                if (remainingSeconds === 0) {
+                clearInterval(countdown);
+                capturePhoto();
+                counter.removeChild(tag_h1);
+                }
+            }, 1000);
+        });
+
+        function capturePhoto() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const dataURL = canvas.toDataURL('image/png');
+            Img.src = dataURL;
+          
+            capturedImg.appendChild(Img);
+            console.log(dataURL);
+            savePoto(dataURL);
+            capturedImg.style.display = "block";
+            vidContainer.style.display="none";
+           
+        }
+        function savePoto(dataURL){
+            const xhr = new XMLHttpRequest();
+            // set the request method and URL
+            xhr.open('POST', 'upload.php', true);
+            // set the onload event handler
+            xhr.onload = () => {
+            // handle the response from the server
+            console.log(xhr.responseText);
+            };
+            // create a new FormData object
+            const formData = new FormData();
+            // add the file to the FormData object
+            formData.append('image', dataURL);
+            // send the request to the server
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("photo=" + encodeURIComponent(dataURL));
+            //xhr.send(formData);
+        }
+    </script>
+</body>
+</html>
+  

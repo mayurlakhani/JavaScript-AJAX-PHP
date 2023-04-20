@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  
+<body>
+<h1>CRUD all demo</h1>
+<form id="myForm" action=""  method="post" enctype="multipart/form-data">
+
+    First name: <input type="text" name="fname" value="Donald"><br>
+  
+    Last name: <input type="text" name="lname" value="Duck"><br>
+
+    profile photo:<input type="file" name="image" id="img-upload" accept="image/gif, image/jpeg, image/png" onchange="loadFile(event)"> <a href="" name="click" style="height: 25px; width:70px;">Upload</a> <br>
+    
+    <div id="profile"></div>
+    Gender: <br> <input type="radio" id="gender_male" name="gender" value="male">
+    <label for="gender">male</label><br>
+    <input type="radio" id="gender_female" name="gender" value="female">
+    <label for="gender">female</label><br>
+    <label for="gender">Choose a Car:</label>
+  
+    <select id="cars" name="cars">
+      <option value="volvo">Volvo XC90</option>
+      <option value="saab">Saab 95</option>
+      <option value="mercedes" selected="selected">Mercedes SLK</option>
+      <option value="audi">Audi TT</option>
+    </select><br>
+
+    <div>
+        <label>Select extra service</label>
+        <span>software Update</span>
+        <input type="checkbox" class="services"  name="service[]" value="software">
+
+        <span>Maintainance</span>
+        <input type="checkbox" class="services" name="service[]" value="maintainance">
+
+        <span>Insurance</span>
+        <input type="checkbox" class="services" name="service[]" value="insurance">
+    </div>
+
+    <label for="suggestion">add your suggestion:</label><br>
+  
+    <textarea id="suggestion" name="suggestion" rows="4" cols="50">
+    </textarea> <br>
+  
+    <input type="checkbox" id="agree" name="agree" value="agree">
+  
+    <label for="agree"> I agree</label><br>
+  
+    <input type="submit" value="Submit"><input type="reset">
+  
+  </form> 
+  
+  show Response:
+  <div id="resut"></div>
+  
+  <script>
+
+      let form = document.forms["myForm"];
+      form.addEventListener("submit", RetriveVal);
+      form.addEventListener("submit", getAllInput);
+      function getAllInput(event){
+        document.querySelectorAll('input').forEach( input => {
+             console.log(input.value);
+          });
+      }
+      function RetriveVal(event){
+          event.preventDefault();
+  
+            let data = {
+                "fname": this.fname.value, 
+                "lname": this.lname.value, 
+                "suggestion": this.suggestion.value, 
+                "cars": this['cars'].value, 
+                "gender": this.gender.value,
+                "agree": this.agree.checked,
+                "services": []
+            }
+            let servicesList = document.querySelectorAll(".services");
+                for (let service of servicesList){
+                    if(service.checked == true){
+                        data['services'].push(service.value);
+                    }
+                }
+            console.log(data);
+
+            let out = `
+                <p>First Name: <span>${data.fname}</span></p><br>
+                <p>Last Name: <span>${data.lname}</span></p><br>
+                <p>suggestion: <span>${data.suggestion}</span></p><br>
+                <p>Fav car: <span>${data.cars}</span></p><br>
+                <p>Gender: <span>${data.gender}</span></p><br>
+                <p>Agree: <span>${data.agree}</span></p><br>
+                <p>Services: <span>${data.services}</span></p><br>
+            `;
+            let divTag = document.createElement("html");
+            divTag.append(out);
+            document.body.append(divTag);
+       }
+      var loadFile =function(event){
+        let imageElement = document.createElement("img")
+        let result_img = document.getElementById('profile');
+        imageElement.src = URL.createObjectURL(event.target.files[0]);
+        imageElement.setAttribute("height","55px");
+        imageElement.setAttribute("alt","profile image");
+        imageElement.setAttribute("width", "55px");
+        result_img.appendChild(imageElement);
+      } 
+     
+       let uplaod_link = document.querySelector("a");
+       uplaod_link.addEventListener("click", function(){
+        alert("hi");
+       })
+
+      
+  </script>
+</body>
+</html>

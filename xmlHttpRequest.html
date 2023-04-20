@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>XMLHttpRequestDEMO</title>
+  </head>
+  <body>
+    <div>
+        <h1>1. For search string/ send request param from input value</h1>
+        <form action=""> 
+            First name: <input type="text" id="txt1" onkeyup="showHint(this.value)">
+        </form>
+        <p>Suggestions: <span id="txtHint"></span></p> 
+    </div>    
+    <div>
+        <h1>2. For get JSON Response</h1>
+        <button id="fetchJsonRes" value="fetchResponse">fetchResponse</button>
+        <p id="loadJsonMsg"></p>
+    </div>
+
+    <div>
+      <h1>3. For read json file using get method</h1>
+      <button id="readJsonRes" value="readJsonFile">readJsonFile</button>
+      <input id="loadReadJsonMsg" type="text">
+    </div>
+
+    <div>
+      <h1>4. set variable to request param and get variable from php </h1>
+      <button id="getVar" value="getVar">getVariable</button>
+      <input type="text" id="inp1">
+      <input type="text" id="inp2">
+      <input id="getRes" type="text" readonly>
+    </div>
+
+    <div>
+      <h1>5. Post data var </h1>
+      <button id="postdata" value="getVar">send</button>
+      <input type="text" id="i1">
+      <input type="text" id="i2">
+    </div>
+
+    <div>
+      <h1>6. Post form data</h1>
+      <form id="savedata" action=""  method="post" enctype="application/x-www-form-urlencoded">
+          First name:<br>
+          <input type="text" name="fname" value="shree">
+          <br>
+          Last name:<br>
+          <input type="text" name="lname" value="hari">
+          <input type="submit" name="submit" value="submit">
+      </form>
+    </div>
+    <div>
+      <h1>7. Post image data</h1>
+      <form enctype="multipart/form-data">
+        <input type="file" name="image" id="image">
+        <button type="button" onclick="uploadImage()">Upload</button>
+      </form>      
+    </div>
+    <div>
+      <h1>8. fetch asyncronous data</h1>
+      
+    </div>
+    <script src="xmlHttpRequest.js"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>
